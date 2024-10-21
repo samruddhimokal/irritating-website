@@ -27,13 +27,18 @@ const DarkIrritatingWebsiteWithSound = () => {
       simulateSound('complete');
     }, 5000);
 
+    console.log('Setting up intervals');
     const popupInterval = setInterval(() => {
+      console.log('Attempting to create popup');
       if (popups.length < 5) {
-        setPopups(prev => [...prev, {
-          id: Date.now(),
-          x: Math.random() * (window.innerWidth - 200),
-          y: Math.random() * (window.innerHeight - 100),
-        }]);
+        setPopups(prev => {
+          console.log('Creating new popup');
+          return [...prev, {
+            id: Date.now(),
+            x: Math.random() * (window.innerWidth - 200),
+            y: Math.random() * (window.innerHeight - 100),
+          }];
+        });
         simulateSound('popup');
       }
     }, 3000);
@@ -49,11 +54,12 @@ const DarkIrritatingWebsiteWithSound = () => {
     }, 5000);
 
     return () => {
+      console.log('Cleaning up intervals');
       clearInterval(popupInterval);
       clearInterval(shakeInterval);
       clearInterval(backgroundMusicInterval);
     };
-  }, [popups.length]);
+  }, [popups.length, simulateSound]);
 
   const handleMouseMove = (e) => {
     setTimeout(() => {
@@ -117,6 +123,8 @@ const DarkIrritatingWebsiteWithSound = () => {
         cursor: 'none',
         transform: `rotate(${rotationDegree}deg) scale(${zoomLevel / 100})`,
         transition: 'transform 0.5s ease-in-out',
+        border: '2px solid red',  // Add this line
+        padding: '20px',          // Add this line
       }}
       onMouseMove={handleMouseMove}
     >
@@ -154,7 +162,7 @@ const DarkIrritatingWebsiteWithSound = () => {
         <div 
           key={popup.id}
           className="absolute bg-gray-800 rounded-lg shadow-lg p-4 w-64 animate-bounce"
-          style={{ left: popup.x, top: popup.y, zIndex: 30 }}
+          style={{ left: popup.x, top: popup.y, zIndex: 30, border: '2px solid yellow', color: 'white' }}
         >
           <p className="text-sm text-gray-200">
             {Math.random() > 0.5 ? 
